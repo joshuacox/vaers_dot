@@ -6,13 +6,21 @@
 # To achieve this task, you can use Python along with libraries like `pandas` for data manipulation and `matplotlib` or `seaborn` for plotting. Below is a step-by-step guide on how to do this:
 
 ### Step 1: Import necessary libraries
+import glob, os
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
 
+# Specify the directory containing your CSV files
+dir_path = 'data'
+
 ### Step 2: Load the CSV file into a DataFrame
 # Assuming your CSV file is named `data.csv`, you can load it using `pandas`:
-df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1')
+# df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1')
+
+# Load all CSV files into DataFrames and concatenate them with ignore_index=True
+dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
+df = pd.concat(dfs, axis=0, ignore_index=True)
 
 ### Step 3: Convert the RECVDATE column to datetime format
 # Ensure that the `RECVDATE` column is in a datetime format so we can extract the month and year:
