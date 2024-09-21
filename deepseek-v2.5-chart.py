@@ -20,8 +20,11 @@ dir_path = 'data'
 # df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1')
 
 # Load all CSV files into DataFrames and concatenate them with ignore_index=True
-dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '202*DATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '202*VAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '2020VAERSDATA.csv'))]
+dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False) for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
 df = pd.concat(dfs, axis=0, ignore_index=True)
 
 ### Step 3: Convert the RECVDATE column to datetime format
@@ -42,6 +45,11 @@ died_y = df[df['DIED'] == 'Y']
 died_y['YearMonth'] = died_y[date_field].dt.to_period('M')
 monthly_counts = died_y.groupby('YearMonth').size()
 monthly_counts.index = monthly_counts.index.astype(str)
+
+# died_vax_taken = df[df['DIED'] == 'Y']
+# died_vax_taken['YearMonth'] = died_vax_taken['VAX_DATE'].dt.to_period('M')
+# monthly_vax_taken_premortem = died_vax_taken.groupby('YearMonth').size()
+# monthly_vax_taken_premortem.index = monthly_vax_taken_premortem.index.astype(str)
 
 l_threat_y = df[df['L_THREAT'] == 'Y']
 l_threat_y['YearMonth'] = l_threat_y[date_field].dt.to_period('M')
@@ -77,9 +85,10 @@ monthly_counts_er_visit.index = monthly_counts_er_visit.index.astype(str)
 # Plotting
 plt.figure(figsize=(12, 6))
 monthly_counts.plot(kind='line', marker='o', label='deaths', color='red')
-# monthly_counts_l_threat.plot(kind='line', marker='o', label='l_threat', color='purple')
+monthly_counts_l_threat.plot(kind='line', marker='o', label='l_threat', color='purple')
 monthly_counts_er_visit.plot(kind='line', marker='o', label='er_visit', color='blue')
 monthly_counts_hospital.plot(kind='line', marker='o', label='hospital', color='green')
+# monthly_vax_taken_premortem.plot(kind='line', marker='o', label='deaths', color='blue')
 # monthly_counts_first.plot(kind='line', marker='o', label='deaths first vax', color='green')
 # monthly_counts_prior.plot(kind='line', marker='o', label='deaths prior vax', color='red')
 plt.title('Number of Deaths/LifeThreating/Hospitalizations per Month')
