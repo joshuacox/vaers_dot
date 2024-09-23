@@ -1,5 +1,9 @@
 #!/usr/bin env python3
 date_field = 'RECVDATE'
+# date_field = 'RPT_DATE'
+# date_field = 'VAX_DATE'
+# date_field = 'ONSET_DATE'
+# date_field = 'DATEDIED'
 # vaersPlot #3
 
 ### writen by deepseek-v2.5:latest
@@ -20,12 +24,14 @@ dir_path = 'data'
 # df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1')
 
 # Load all CSV files into DataFrames and concatenate them with ignore_index=True
-# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '202*DATA.csv'))]
-# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
-# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '202*VAERSDATA.csv'))]
-# dfs = [pd.read_csv(f, encoding='latin-1') for f in glob.glob(os.path.join(dir_path, '2020VAERSDATA.csv'))]
-dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False) for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*DATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*VAERSDATA.csv'))]
+dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '2021VAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, 'NonDomesticVAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '[12]*VAERSDATA.csv'))]
 df = pd.concat(dfs, axis=0, ignore_index=True)
+# df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1', low_memory=False, quotechar='"')
 
 ### Step 3: Convert the RECVDATE column to datetime format
 # Ensure that the `RECVDATE` column is in a datetime format so we can extract the month and year:
@@ -45,6 +51,16 @@ died_y = df[df['DIED'] == 'Y']
 died_y['YearMonth'] = died_y[date_field].dt.to_period('M')
 monthly_counts = died_y.groupby('YearMonth').size()
 monthly_counts.index = monthly_counts.index.astype(str)
+
+# died_no = df[df['DIED'] != 'Y']
+# died_no['YearMonth'] = died_no[date_field].dt.to_period('M')
+# monthly_no_counts = died_no.groupby('YearMonth').size()
+# monthly_no_counts.index = monthly_no_counts.index.astype(str)
+
+# not_dhle = df[(df['DIED'] != 'Y') & (df['L_THREAT'] != 'Y') & (df[df['HOSPITAL'] != 'Y']) & (df[df['ER_VISIT'] != 'Y'])]
+# not_dhle['YearMonth'] = not_dhle[date_field].dt.to_period('M')
+# monthly_not_dhle_counts = not_dhle.groupby('YearMonth').size()
+# monthly_not_dhle_counts.index = monthly_not_dhle_counts.index.astype(str)
 
 # died_vax_taken = df[df['DIED'] == 'Y']
 # died_vax_taken['YearMonth'] = died_vax_taken['VAX_DATE'].dt.to_period('M')
@@ -85,6 +101,8 @@ monthly_counts_er_visit.index = monthly_counts_er_visit.index.astype(str)
 # Plotting
 plt.figure(figsize=(12, 6))
 monthly_counts.plot(kind='line', marker='o', label='deaths', color='red')
+# monthly_no_counts.plot(kind='line', marker='o', label='did not die', color='black')
+# monthly_not_dhle_counts.plot(kind='line', marker='o', label='did not die', color='black')
 monthly_counts_l_threat.plot(kind='line', marker='o', label='l_threat', color='purple')
 monthly_counts_er_visit.plot(kind='line', marker='o', label='er_visit', color='blue')
 monthly_counts_hospital.plot(kind='line', marker='o', label='hospital', color='green')
