@@ -123,6 +123,9 @@ monthly_counts_hospital.plot(kind='line', marker='o', label='hospital', color='g
 # monthly_counts_first.plot(kind='line', marker='o', label='deaths first vax', color='green')
 # monthly_counts_prior.plot(kind='line', marker='o', label='deaths prior vax', color='red')
 
+# Add a vertical red line on December 10th, 2020
+plt.axvline(datetime(2020, 12, 10), color='red', linestyle='--', linewidth=2)
+
 # plt.axvline(datetime(2020, 12, 11))
 # plt.axvline(datetime(1969, 12, 11))
 # plt.axvline(datetime(1970, 1, 1))
