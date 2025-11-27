@@ -28,6 +28,7 @@
             height: auto;
             border: 1px solid #ccc;
             box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
         .gallery figure {
@@ -39,6 +40,26 @@
             margin-top: 8px;
             font-size: 0.9em;
             color: #555;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
@@ -63,6 +84,13 @@
             <figcaption>Weekly Deaths 2020-2023</figcaption>
         </figure>
     </div>
+
+    <!-- Modal container -->
+    <div class="modal" id="imageModal">
+        <img src="" alt="Full size image" id="modalImg">
+    </div>
+
+    <script src="index.js"></script>
 </body>
 
 </html>
