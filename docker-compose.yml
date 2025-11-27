@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  vaersdot:
+    image: nginx:alpine
+    container_name: vaers-dot
+    restart: unless-stopped
+    ports:
+      - "${VAERS_DOT_PORT:-8083}:80"
+    volumes:
+      - "./docs:/usr/share/nginx/html:ro"
