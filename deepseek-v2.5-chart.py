@@ -25,12 +25,12 @@ dir_path = 'data'
 
 # Load all CSV files into DataFrames and concatenate them with ignore_index=True
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*DATA.csv'))]
-# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
+dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*VAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '2021VAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, 'NonDomesticVAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '[12]*VAERSDATA.csv'))]
-dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
 df = pd.concat(dfs, axis=0, ignore_index=True)
 # df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1', low_memory=False, quotechar='"')
 
