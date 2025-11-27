@@ -27,9 +27,10 @@ dir_path = 'data'
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*DATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '201[6-8]VAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '202*VAERSDATA.csv'))]
-dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '2021VAERSDATA.csv'))]
+# dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '2021VAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, 'NonDomesticVAERSDATA.csv'))]
 # dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '[12]*VAERSDATA.csv'))]
+dfs = [pd.read_csv(f, encoding='latin-1', low_memory=False, quotechar='"') for f in glob.glob(os.path.join(dir_path, '*DATA.csv'))]
 df = pd.concat(dfs, axis=0, ignore_index=True)
 # df = pd.read_csv('data/NonDomesticVAERSDATA.csv', encoding='latin-1', low_memory=False, quotechar='"')
 
@@ -51,6 +52,16 @@ died_y = df[df['DIED'] == 'Y']
 died_y['YearMonth'] = died_y[date_field].dt.to_period('M')
 monthly_counts = died_y.groupby('YearMonth').size()
 monthly_counts.index = monthly_counts.index.astype(str)
+
+had_vax_date = df[df['VAX_DATE'] != '']
+had_vax_date['YearMonth'] = had_vax_date[date_field].dt.to_period('M')
+had_vax_date_monthly_counts = had_vax_date.groupby('YearMonth').size()
+had_vax_date_monthly_counts.index = had_vax_date_monthly_counts.index.astype(str)
+
+had_rpt_date = df[df['RPT_DATE'] != '']
+had_rpt_date['YearMonth'] = had_rpt_date[date_field].dt.to_period('M')
+had_rpt_date_monthly_counts = had_rpt_date.groupby('YearMonth').size()
+had_rpt_date_monthly_counts.index = had_rpt_date_monthly_counts.index.astype(str)
 
 # died_no = df[df['DIED'] != 'Y']
 # died_no['YearMonth'] = died_no[date_field].dt.to_period('M')
@@ -101,6 +112,8 @@ monthly_counts_er_visit.index = monthly_counts_er_visit.index.astype(str)
 # Plotting
 plt.figure(figsize=(12, 6))
 monthly_counts.plot(kind='line', marker='o', label='deaths', color='red')
+# had_vax_date_monthly_counts.plot(kind='line', marker='o', label='vax', color='red')
+# had_rpt_date_monthly_counts.plot(kind='line', marker='o', label='rpt', color='blue')
 # monthly_no_counts.plot(kind='line', marker='o', label='did not die', color='black')
 # monthly_not_dhle_counts.plot(kind='line', marker='o', label='did not die', color='black')
 monthly_counts_l_threat.plot(kind='line', marker='o', label='l_threat', color='purple')
@@ -109,6 +122,12 @@ monthly_counts_hospital.plot(kind='line', marker='o', label='hospital', color='g
 # monthly_vax_taken_premortem.plot(kind='line', marker='o', label='deaths', color='blue')
 # monthly_counts_first.plot(kind='line', marker='o', label='deaths first vax', color='green')
 # monthly_counts_prior.plot(kind='line', marker='o', label='deaths prior vax', color='red')
+
+# plt.axvline(datetime(2020, 12, 11))
+# plt.axvline(datetime(1969, 12, 11))
+# plt.axvline(datetime(1970, 1, 1))
+# ax = plt.axes()
+# ax.axvline(pd.to_datetime('2020-12-11'), color='r', linestyle='--', lw=2)
 plt.title('Number of Deaths/LifeThreating/Hospitalizations per Month')
 plt.xlabel('Month')
 plt.ylabel('Count')
