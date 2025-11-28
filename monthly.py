@@ -95,19 +95,22 @@ def compute_monthly_counts(df: pd.DataFrame, date_col: str) -> dict:
 
     # Vaccine‑specific death counts
     vax_type_monthly_deaths = {}
+    # Determine which column holds vaccine identification
     if 'VAX_TYPE' in df.columns:
-        vax_iter = df['VAX_TYPE'].dropna().unique()
         vax_key = 'VAX_TYPE'
-    else:
-        vax_iter = df['VAX_NAME'].dropna().unique()
+    elif 'VAX_NAME' in df.columns:
         vax_key = 'VAX_NAME'
+    else:
+        vax_key = None
 
-    for vax in vax_iter:
-        df_vax = df[(df[vax_key] == vax) & (df['DIED'] == 'Y')].copy()
-        df_vax['YearMonth'] = df_vax[date_col].dt.to_period('M')
-        counts = df_vax.groupby('YearMonth').size()
-        counts.index = counts.index.astype(str)
-        vax_type_monthly_deaths[vax] = counts
+    if vax_key:
+        vax_iter = df[vax_key].dropna().unique()
+        for vax in vax_iter:
+            df_vax = df[(df[vax_key] == vax) & (df['DIED'] == 'Y')].copy()
+            df_vax['YearMonth'] = df_vax[date_col].dt.to_period('M')
+            counts = df_vax.groupby('YearMonth').size()
+            counts.index = counts.index.astype(str)
+            vax_type_monthly_deaths[vax] = counts
 
     results['vax_type_monthly_deaths'] = vax_type_monthly_deaths
 
