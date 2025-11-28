@@ -1,4 +1,4 @@
-#!/usr/bin env python3
+#!/usr/bin/env python3
 date_field = 'RECVDATE'
 # date_field = 'RPT_DATE'
 # date_field = 'VAX_DATE'
