@@ -141,7 +141,7 @@ def plot_monthly_metrics(metrics: dict):
         )
 
     # Add a vertical red dashed line on December 10th, 2020
-    plt.axvline(datetime(2020, 12, 10), color='red', linestyle='--', linewidth=2)
+    #plt.axvline(datetime(2020, 12, 10), color='red', linestyle='--', linewidth=2)
 
     plt.title('Monthly VAERS Metrics (Deaths, Life‑Threatening, ER Visits, Hospitalizations) by Vaccine')
     plt.xlabel('Month')
